@@ -1,23 +1,43 @@
-// Using Icarus/IVerilog on Vim
+// Using Icarus/IVerilog on NeoVim
 
-module Breadboard	(w,x,y,z,r1,r2,r3);  //Module Header
-input w,x,y,z;                           //Specify inputs
-output r1, r2, r3;                       //Specify outputs
-reg r1,r2,r3;                            //Output is a memory area.
-wire w,x,y,z;
+module Breadboard	(w, x, y, z, r0, r1, r2, r3, r4, r5, r6, r7, r8, r9);  //Module Header
+input w, x, y, z;                           //Specify inputs
+output r0, r1, r2, r3, r4, r5, r6, r7, r8, r9;                       //Specify outputs
+reg r0, r1, r2, r3, r4, r5, r6, r7, r8, r9;                       
+wire w, x, y, z;
 
-always @ ( w,x,y,z,r1,r2,r3) begin       //Create a set of code that works line by line 
+always @ ( w, x, y, z, r0, r1, r2, r3, r4, r5, r6, r7, r8, r9) begin       //Create a set of code that works line by line 
                                          //when these variables are used
 
-//x+y'z                                  //Comment for the formula
-r1= (x)|((~y)&z);                        //Bitwise operation of the formula
+//y
+r0 = (y);
 
-//Demorgan's							 //Comment for the formula
-r2= ~(~(~y&z)&(~x));
+//yz + w'x'z + w'xy + wx'y + wxz + wxy' + wy'z' + xy'z'
+r1 = (y&z) | ((~w)&(~x)&z) | ((~w)&x&y) | (w&(~x)&y) | (w&x&z) | (w&x&(~y)) | (w&(~y)&(~z)) | (x&(~y)&(~z));
 
-//wxyz+w'x'y'z'
-r3= (w&x&y&z)|(~w&~x&~y&~z);
-	
+//xy'z + xyz' + x'y'z' + x'yz
+r2 = (x&(~y)&z) | (x&y&(~z)) | ((~x)&(~y)&(~z)) | ((~x)&y&z);
+
+//w + x
+r3 = (w) | (x);
+
+//w'y' + x'y'z' + w'x'z'
+r4 = (~(w)&(~y)) | ((~x)&(~y)&(~z)) | ((~w)&(~x)&(~z));
+
+//w'z + x'z + w'x
+r5 = ((~w)&z) | ((~x)&z) | ((~w)&x);
+
+//w' + xyz
+r6 = (~w) | (x&y&z);
+
+//w'z + w'y + w'x'
+r7 = ((~w)&z) | ((~w)&y) | ((~w)&(~x));
+
+//w'x'y + w'xy'
+r8 = ((~w)&(~x)&y) | ((~w)&x&(~y));
+
+//w'x'y'z' + w'x'yz + wxy'z' + wxyz + wx'y'z
+r9 = ((~w)&(~x)&(~y)&(~z)) | ((~w)&(~x)&y&z) | (w&x&(~y)&(~z)) | (w&x&y&z) | (w&(~x)&(~y)&z);
 
 end                                       // Finish the Always block
 
@@ -28,19 +48,18 @@ module testbench();
 
   //Registers act like local variables
   reg [4:0] i; //A loop control for 16 rows of a truth table.
-  reg  a;//Value of 2^3
-  reg  b;//Value of 2^2
-  reg  c;//Value of 2^1
-  reg  d;//Value of 2^0
+  reg  w;//Value of 2^3
+  reg  x;//Value of 2^2
+  reg  y;//Value of 2^1
+  reg  z;//Value of 2^0
   
   //A wire can hold the return of a function
-  wire  f1,f2,f3;
-  
+  wire  f0, f1, f2, f3, f4, f5, f6, f7, f8, f9;
   //Modules can be either functions, or model chips. 
   //They are instantiated like an object of a class, 
   //with a constructor with parameters.  They are not invoked,
   //but operate like a thread.
-  Breadboard bb8(a,b,c,d,f1,f2,f3);
+  Breadboard bb8(w, x, y, z, f0, f1, f2, f3, f4, f5, f6, f7, f8, f9);
  
      
 	 
@@ -49,24 +68,26 @@ module testbench();
   initial begin
    	
   //$display acts like a java System.println command.
-  $display ("|##|A|B|C|D|F1|F2|F3|");
-  $display ("|==+=+=+=+=+==+==+==|");
+  
+  
+  $display ("|##|W|X|Y|Z|F0|F1|F2|F3|F4|F5|F6|F7|F8|F9|");
+  $display ("|==+=+=+=+=+==+==+==+==+==+==+==+==+==+==|");
   
     //A for loop, with register i being the loop control variable.
-	for (i = 0; i <=15; i = i + 1) 
+	for (i = 0; i <= 15; i = i + 1) 
 	begin//Open the code block of the for loop
-		a=(i/8)%2;//High bit
-		b=(i/4)%2;
-		c=(i/2)%2;
-		d=(i/1)%2;//Low bit	
+		w = (i/8) % 2;//High bit
+		x = (i/4) % 2;
+		y = (i/2) % 2;
+		z = (i/1) % 2;//Low bit	
 		 
 		//Oh, Dr. Becker, do you remember what belongs here? 
 		#5;
  
 		 	
-		$display ("|%2d|%1d|%1d|%1d|%1d| %1d| %1d| %1d|",i,a,b,c,d,f1,f2,f3);
-		if(i%4==3) //Every fourth row of the table, put in a marker for easier reading.
-		 $write ("|--+-+-+-+-+--+--+--|\n");//Write acts a bit like a java System.print
+		$display ("|%2d|%1d|%1d|%1d|%1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d| %1d|",i , w, x, y, z, f0, f1, f2, f3, f4, f5, f6, f7, f8, f9);
+		if(i % 4 == 3) //Every fourth row of the table, put in a marker for easier reading.
+		 $write ("|--+-+-+-+-+--+--+--+--+--+--+--+--+--+--|\n");//Write acts a bit like a java System.print
 
 	end//End of the for loop code block
  
@@ -75,9 +96,6 @@ module testbench();
   end  //End the code block of the main (initial)
   
 endmodule //Close the testbench module
-
-
-
 
 
 
