@@ -70,7 +70,7 @@ module testbench();
   //$display acts like a java System.println command.
   
   
-  $display ("|##|W|X|Y|Z|F0|F1|F2|F3|F4|F5|F6|F7|F8|F9|");
+  $display ("|##|w|x|y|z|f0|f1|f2|f3|f4|f5|f6|f7|f8|f9|");
   $display ("|==+=+=+=+=+==+==+==+==+==+==+==+==+==+==|");
   
     //A for loop, with register i being the loop control variable.
