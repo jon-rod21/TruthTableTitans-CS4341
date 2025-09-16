@@ -1,5 +1,3 @@
-// Using Icarus/IVerilog on NeoVim
-
 module Breadboard (w, x, y, z, r0, r1, r2, r3, r4, r5, r6, r7, r8, r9); 
 input w, x, y, z;                                                       
 output r0, r1, r2, r3, r4, r5, r6, r7, r8, r9;                          
@@ -42,6 +40,7 @@ end
 
 endmodule                                 
 
+// Using Iverlog/Icarus on NeoVim
 module testbench();
 
   reg [4:0] i;
@@ -80,7 +79,7 @@ module testbench();
 	$finish;
   end 
   
-endmodule // Close testbench
+endmodule
 
 
 
