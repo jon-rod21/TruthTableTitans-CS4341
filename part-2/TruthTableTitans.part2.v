@@ -2,7 +2,7 @@ module seven_seg_display(input a, b, c, d, e, f, g);
     always @(*) begin
         #5;
 
-        $display("In SevenSegment, the segments are       : [%b%b%b%b%b%b%b]\n", a, b, c, d, e, f, g); 
+        $display("In SevenSegment, the segments are     : [%b%b%b%b%b%b%b]\n", a, b, c, d, e, f, g); 
         
         if (a)
             $display("   #####");
@@ -25,7 +25,7 @@ module seven_seg_display(input a, b, c, d, e, f, g);
         $display(" %s    %s", e ? "##" : " ", c ? " ##" : " ");
 
         if (d)
-            $display("   #####");
+            $display("   #####\n");
         else
             $display("        \n");
     end
@@ -35,12 +35,13 @@ endmodule
 module d416(input [3:0] in, output [15:0] out);
     wire [3:0] n;
 
+    // Invert inputs
     not not0(n[0], in[0]);
     not not1(n[1], in[1]);
     not not2(n[2], in[2]);
     not not3(n[3], in[3]);
 
-
+    // Generate onehot outputs
     and and0(out[0], n[3], n[2], n[1], n[0]);
     and and1(out[1], n[3], n[2], n[1], in[0]);
     and and2(out[2], n[3], n[2], in[1], n[0]);
@@ -68,6 +69,7 @@ module Breadboard(input [3:0] i);
    
     seven_seg_display display(a, b, c, d, e, f, g);
     
+    // Map onehot numbers to segments
     assign a = onehot[0] | onehot[2] | onehot[3] | onehot[5] | onehot[6] | onehot[7] | onehot[8] | onehot[9] | onehot[10] | onehot[14] | onehot[15];
     assign b = onehot[0] | onehot[1] | onehot[2] | onehot[3] | onehot[4] | onehot[7] | onehot[8] | onehot[9] | onehot[10] | onehot[13];
     assign c = onehot[0] | onehot[1] | onehot[3] | onehot[4] | onehot[5] | onehot[6] | onehot[7] | onehot[8] | onehot[9] | onehot[10] | onehot[11] | onehot[13];
@@ -87,10 +89,12 @@ module Breadboard(input [3:0] i);
 
 endmodule
 
+// Using Iverilog/Icarus on NeoVim
 module testbench();
     reg [3:0] i;
     integer j;
 
+    // Invoke breadboard for current number
     Breadboard bb(i);
 
     initial begin
