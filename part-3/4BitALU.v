@@ -31,7 +31,7 @@ wire [15:0] select;
 wire [(k*2-1):0] b;
 
 //Logic
-wire [(k-1):0] outputAND;
+wire [(16-1):0] outputAND; //changed
 wire [(k-1):0] outputXOR;
 wire [(k-1):0] outputOR;
 wire [(k-1):0] outputNOT;
@@ -58,10 +58,10 @@ reg [(k-1):0] regA;
 reg [(k-1):0] regB;
 
 reg  [(k*2-1):0] next;
-wire [(k*2-1):0] cur;
+wire [(16*2-1):0] cur;
 
 //----------------------------------------------
-DFF ACC1 [7:0] (clk,next,cur);//Accumulator Register
+DFF ACC1 [31:0] (clk,next,cur);//Accumulator Register
 Dec4x16          dec1(opcode,select);
 Mux16x8          mux1(channels,select,b);
 //----------------------------------------------
@@ -110,7 +110,7 @@ assign channels[ 4]=outputMULT;
 assign channels[ 5]={{k{outputDIV[k-1]}},outputDIV};
 assign channels[ 6]={{k{outputMOD[k-1]}},outputMOD};
 
-assign channels[ 7]={4'b0000,outputAND};
+assign channels[ 7]={16'b0000000000000000,outputAND};
 assign channels[ 8]={4'b0000,outputOR};
 assign channels[ 9]={4'b0000,outputNOT};
 assign channels[10]={4'b0000,outputXOR};
