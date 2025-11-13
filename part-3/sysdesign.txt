@@ -1,0 +1,44 @@
+Parts List:
+
+Dec4x16:
+    decodes a 4 bit opcode to a 16 bit onehot number for selection
+
+Mux16x8: 
+    selects 1 of 16 input signals and forwards it to one of 8 output lines 
+
+FourBitMul   
+    behaviouraly multiplies 2 4 bit numbers
+
+FourBitAddSub
+    uses the full adder with 2 4 bit numbers and a carry signal to determine addition or subtraction within the full adder
+
+FourBitDiv   
+    Uses behavioral division to divide 2 inputs A and B while erroring if division is by 0
+
+FourBitMod   
+    Uses behavioral modulus to mod 2 inputs A and B, erroring if modding by 0
+
+FourBitBuffer
+    Stores inputA and passes it to another part of the circuit through inputC
+
+FourBitNOT   
+    Negates the inputA and returns it into outputC.
+
+FourBitAND   
+    Ands inputA and inputB, returning the result in outputC
+
+FourBitNAND  
+    Nands inputA and inputB, returing the result in outputC
+
+FourBitOR    
+    Or's inputA and inputB, returning the result in outputC
+
+FourBitNOR   
+    Nor's inputA and inputB, returning the result in outputC
+
+FourBitXOR   
+    XOr's inputA and inputB, returning the result in outputC
+
+FourBitXNOR  
+    Xnor's inputA and inputB, returing the result in outputC
+

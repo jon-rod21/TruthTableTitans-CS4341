@@ -31,7 +31,7 @@ wire [15:0] select;
 wire [(k*2-1):0] b;
 
 //Logic
-wire [(16-1):0] outputAND; //changed
+wire [(k-1):0] outputAND; //changed
 wire [(k-1):0] outputXOR;
 wire [(k-1):0] outputOR;
 wire [(k-1):0] outputNOT;
@@ -58,10 +58,10 @@ reg [(k-1):0] regA;
 reg [(k-1):0] regB;
 
 reg  [(k*2-1):0] next;
-wire [(16*2-1):0] cur;
+wire [(k*2-1):0] cur;
 
 //----------------------------------------------
-DFF ACC1 [31:0] (clk,next,cur);//Accumulator Register
+DFF ACC1 [7:0] (clk,next,cur);//Accumulator Register
 Dec4x16          dec1(opcode,select);
 Mux16x8          mux1(channels,select,b);
 //----------------------------------------------
@@ -110,7 +110,7 @@ assign channels[ 4]=outputMULT;
 assign channels[ 5]={{k{outputDIV[k-1]}},outputDIV};
 assign channels[ 6]={{k{outputMOD[k-1]}},outputMOD};
 
-assign channels[ 7]={16'b0000000000000000,outputAND};
+assign channels[ 7]={4'b0000,outputAND};
 assign channels[ 8]={4'b0000,outputOR};
 assign channels[ 9]={4'b0000,outputNOT};
 assign channels[10]={4'b0000,outputXOR};
@@ -125,7 +125,7 @@ always @(*)
 begin
  mode=0;
  regA= A;
- regB= cur[k-1:0]; //to get the lower bits...
+ regB= cur[16-1:0]; //to get the lower bits... //changed here too
 
 if (opcode==3)
 mode=1;
@@ -348,7 +348,7 @@ breadboard bb8(clk,rst,inputA,inputB,outputC,opcode,error);
 	inputA=4'b1010;
 	opcode=4'b0010;//add 1010
 	#10
-	inputA=4'b1111;
+	inputA=4'b1101;
 	opcode=4'b0111;//AND 1111
 	#10;
 	
