@@ -40,5 +40,106 @@ FourBitXOR
     XOr's inputA and inputB, returning the result in outputC
 
 FourBitXNOR  
-    Xnor's inputA and inputB, returing the result in outputC
+    Xnor's inputA and inputB, returning the result in outputC
 
+
+
+Input List:
+
+clk: 
+    Signal that synchronizes breadboard operations with a rising and falling edge
+
+rst:
+    Signal that resets the state of the breadboard
+
+A:
+    K-bit sized operand that is the second operand for operations.
+
+B:
+    K-bit sized operand that is the first operand for operations. Is determined mainly by the accumulator.
+
+
+opcode:
+    4 Bit code that determines what logical or arithmetic operation will be performed.
+
+
+Output List:
+
+C:
+    2 * K sized bit that holds the result of the performed operation.
+
+error:
+   2 bit error flag that that indicated whether an overflow or divide by zero error has occured.
+
+
+
+Interface List:
+
+channels:
+    Connects the outputs of all arithmetic/logic units to the multiplexor input. It carries 16 possible operations to the MUX.
+
+select:
+    Connects the decoder output to the multiplexor select input channels. Carries the decoded opsignal to determine which channel is selected.
+
+b:
+    Connects multiplexor output to accumulator input and output C. Carries selected operation result.
+
+outputAND:
+    Connects FourBitAND to output channel 7. Carries the bitwise AND of regB and regA.
+
+outputXOR:
+    Connects FourBitXOR to output channel 10. Carries the bitwise XOR of regB and regA.
+
+outputOR:
+    Connects FourBitOR to output channel 8. Carries the bitwise OR of regB and regA.
+
+outputNOT:
+    Connects FourBitNOT to output channel 9. Carries the bitwise NOT of regB and regA.
+
+outputNAND:
+    Connects FourBitNAND to output channel 11. Carries the bitwise NAND of regB and regA.
+
+outputXNOR:
+    Connects FourBitXNOR to output channel 13. Carries the bitwise XNOR of regB and regA.
+
+outputNOR:
+    Connects FourBitNOR to output channel 12. Carries the bitwise NOR of regB and regA.
+
+outputBUFFER:
+    Connects FourBitBUFFER to output channel 0. Carries the bitwise BUFFER of regB and regA.
+
+mode:
+    Connects control logic to FourBitAddSum module. Determines whether addition or subtraction is performed.
+
+lastcarry:
+    Connects FourBitAddSub module carry output to control logic. Indicates final carry bit for addition/subtraction operations.
+
+outputADDSUB:
+    Connects FourBitAddSub module output to channels 2 and 3. Carries the result of addition or subtraction result of regB and regA.
+
+outputDIV:
+    Connects FourBitDiv module output to channel 5. Carries integer division result of regB and regA
+
+outputMOD:
+    Connects FourBitMod module output to channel 6. Carries mod result of regB and regA.
+
+outputMULT:
+    Connects FourBitMult module output to channel 4. Carries multiplication result of regB and regA.
+    
+AddError:
+    Connects FourBitAddSub module to to error output bit 0. Signals overflow or underflow.
+
+ZeroError:
+    Connects FourBitDiv and FourBitMod modules to error output bit 1. Signals divide by 0.
+
+regA:
+    Connects input processing logic to all AL module inputs. Holds processes value of input A.
+
+regB:
+    Connects the accumjlators lower bits to all AL module inputs. Holds current accumulator value.
+
+next:
+    Connects multiplexor output to the accumulator input. Carries the next value to be stored in the accumulator on the next clock cycle.
+
+cur:
+23
