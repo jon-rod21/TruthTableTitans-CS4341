@@ -142,4 +142,4 @@ next:
     Connects multiplexor output to the accumulator input. Carries the next value to be stored in the accumulator on the next clock cycle.
 
 cur:
-23
+    Connects the accumulator output to control logic. Carries the current stored value in the accumulator register (DFF)
