@@ -12,7 +12,7 @@
 //==================================================================
 
 module FourBitAND(inputA,inputB,outputC);
-parameter k=4; // changed
+parameter k=16; // changed
 input  [k-1:0] inputA;
 input  [k-1:0] inputB;
 output [k-1:0] outputC;

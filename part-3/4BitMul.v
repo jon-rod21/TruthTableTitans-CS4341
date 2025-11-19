@@ -1,5 +1,5 @@
 module FourBitMul(inputA,inputB,result);
-parameter k=4;
+parameter k=16;
 
 input [k-1:0]inputA;
 input [k-1:0]inputB;
@@ -14,7 +14,7 @@ reg    [((k)*2-1):0] result;
 always@(*)
 begin
  
-result=8'b00000000;
+result=32'b00000000000000000000000000000000;
    result=inputA*inputB;//behavioral multiplier
    
  end

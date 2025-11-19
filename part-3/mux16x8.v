@@ -11,7 +11,7 @@
 
 //=================================================================
 module Mux16x8(channels, select, b);
-parameter k=8;
+parameter k=32;
 input [15:0][k-1:0] channels;
 input      [15:0] select;
 output      [k-1:0] b;

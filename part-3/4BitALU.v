@@ -4,7 +4,7 @@
 //=================================================
 module breadboard(clk,rst,A,B,C,opcode,error);
 //----------------------------------
-parameter k=4;
+parameter k=16;
 input clk; 
 input rst;
 input [k-1:0] A;
@@ -61,7 +61,7 @@ reg  [(k*2-1):0] next;
 wire [(k*2-1):0] cur;
 
 //----------------------------------------------
-DFF ACC1 [7:0] (clk,next,cur);//Accumulator Register
+DFF ACC1 [31:0] (clk,next,cur);//Accumulator Register
 Dec4x16          dec1(opcode,select);
 Mux16x8          mux1(channels,select,b);
 //----------------------------------------------
@@ -110,13 +110,13 @@ assign channels[ 4]=outputMULT;
 assign channels[ 5]={{k{outputDIV[k-1]}},outputDIV};
 assign channels[ 6]={{k{outputMOD[k-1]}},outputMOD};
 
-assign channels[ 7]={4'b0000,outputAND};
-assign channels[ 8]={4'b0000,outputOR};
-assign channels[ 9]={4'b0000,outputNOT};
-assign channels[10]={4'b0000,outputXOR};
-assign channels[11]={4'b0000,outputNAND};
-assign channels[12]={4'b0000,outputNOR};
-assign channels[13]={4'b0000,outputXNOR};
+assign channels[ 7]={16'b0000000000000000,outputAND};
+assign channels[ 8]={16'b0000000000000000,outputOR};
+assign channels[ 9]={16'b0000000000000000,outputNOT};
+assign channels[10]={16'b0000000000000000,outputXOR};
+assign channels[11]={16'b0000000000000000,outputNAND};
+assign channels[12]={16'b0000000000000000,outputNOR};
+assign channels[13]={16'b0000000000000000,outputXNOR};
 assign channels[14]=0;//Not connected, Shift B Left
 assign channels[15]=0;//Not connected, Shift B Right 
 
@@ -125,7 +125,7 @@ always @(*)
 begin
  mode=0;
  regA= A;
- regB= cur[16-1:0]; //to get the lower bits... //changed here too
+ regB= cur[k-1:0]; //to get the lower bits... //changed here too
 
 if (opcode==3)
 mode=1;
@@ -155,7 +155,7 @@ endmodule
 //TEST BENCH
 //=================================================
 module testbench();
-   parameter k=4;
+   parameter k=16;
 //Local Variables
    reg  clk;
    reg  rst;
@@ -280,158 +280,147 @@ breadboard bb8(clk,rst,inputA,inputB,outputC,opcode,error);
 //========================================
 	
  	//---------------------------------
-	inputA=4'b0000;
+	inputA=16'b0000000000000000;
 	opcode=4'b0001;//RESET
 	#10
 	//---------------------------------	
-	inputA=4'b0010;
+	inputA=16'b0000110110010110;
 	opcode=4'b0010;//ADD
 	#10;
 	//---------------------------------	
-	inputA=4'b0010;
+	inputA=16'b1010011011101011;
 	opcode=4'b0010;//ADD
 	#10
 
 //========================================	
-//Subtract 5 from 3
+//Subtract 52341 from 28674
 //========================================
 	opcode=4'b0001;//RESET
 	#10;
-	inputA=4'b0011;//Add 3
+	inputA=16'b0111000000000010;//Add 3
 	opcode=4'b0010;
 	#10;
-	inputA=4'b0101;//Sub 5
+	inputA=16'b1100110001110101;//Sub 5
 	opcode=4'b0011;
 	#10;
 
 //========================================	
-//Multiply 5x3
+//Multiply 27322 * 46815
 //========================================
 	opcode=4'b0001;//RESET
 	#10;
-	inputA=4'b0101;//Add 5
+	inputA=16'b0110101010111010;//Add 5
 	opcode=4'b0010;
 	#10;
-	inputA=4'b0011;//Mult by 3
+	inputA=16'b1011011011011111;//Mult by 3
 	opcode=4'b0100;
 	#10;
 	
 //========================================	
-//Divide 7 by 3
+//Divide 12345 / 54321
 //========================================
 	opcode=4'b0001;//RESET
 	#10;
-	inputA=4'b0111;//Add 5
+	inputA=16'b0011000000111001;//Add 5
 	opcode=4'b0010;
 	#10;
-	inputA=4'b0011;//Div by 3
+	inputA=16'b1101010000110001;//Div by 3
 	opcode=4'b0101;
 	#10;
 	
 //========================================	
-//Mod 7 by 3
+//Mod 42381 % 9257
 //========================================
 	opcode=4'b0001;//RESET
 	#10;
-	inputA=4'b0111;//Add 5
+	inputA=16'b1010010110001101;//Add 5
 	opcode=4'b0010;
 	#10;
-	inputA=4'b0011;//Div by 3
+	inputA=16'b0010010000101001;//Div by 3
 	opcode=4'b0110;
 	#10;
 	
 //========================================	
-//AND 1010 and 1110
+//AND 50250 and 15807
 //========================================
 	opcode=4'b001;//REST
 	#10;
-	inputA=4'b1010;
+	inputA=16'b1100010001001010;
 	opcode=4'b0010;//add 1010
 	#10
-	inputA=4'b1101;
+	inputA=16'b0011110110111111;
 	opcode=4'b0111;//AND 1111
 	#10;
 	
-//========================================	
-//AND 1010 and 1110
-//========================================
-	opcode=4'b001;//RESET
-	#10;
-	inputA=4'b1010;
-	opcode=4'b0010;//add 1010
-	#10
-	inputA=4'b1111;
-	opcode=4'b1000;//OR 1111
-	#10;
 	
 //========================================	
-//OR 1010 and 1110
+//OR 50250 and 15807
 //========================================
 	opcode=4'b001;//RESET
 	#10;
-	inputA=4'b1010;
+	inputA=16'b1100010001001010;
 	opcode=4'b0010;//add 1010
 	#10
-	inputA=4'b1111;
+	inputA=16'b0011110110111111;
 	opcode=4'b1000;//OR 1111
 	#10;
 
 //========================================
-//NOT
+//NOT 50250 and 15807
 //========================================
 	opcode=4'b001;//RESET
 	#10;
-	inputA=4'b1010;
+	inputA=16'b1100010001001010;
 	opcode=4'b0010;//add 1010
 	#10
 	opcode=4'b1001;//NOT
 	#10;
 	
 //========================================	
-//NAND
+//NAND 50250 and 15807
 //========================================
 	opcode=4'b001;//RESET
 	#10;
-	inputA=4'b1010;
+	inputA=16'b1100010001001010;
 	opcode=4'b0010;//add 1010
 	#10
-	inputA=4'b1111;
+	inputA=16'b0011110110111111;
 	opcode=4'b1010;//XOR
 	#10;
 
 //========================================
-//NAND
+//NAND 50250 and 15807
 //========================================
 	opcode=4'b001;//RESET
 	#10;
-	inputA=4'b1010;
+	inputA=16'b1100010001001010;
 	opcode=4'b0010;//add 1010
 	#10
-	inputA=4'b0000;
+	inputA=16'b0011110110111111;
 	opcode=4'b1011;//NAND
 	#10;
 	
 //========================================
-//NOR
+//NOR 50250 and 15807
 //========================================
 	opcode=4'b001;//RESET
 	#10;
-	inputA=4'b1010;
+	inputA=16'b1100010001001010;
 	opcode=4'b0010;//add 1010
 	#10
-	inputA=4'b1111;
+	inputA=16'b0011110110111111;
 	opcode=4'b1100;//NOR
 	#10;
 	
 //========================================	
-//XNOR
+//XNOR 50250 and 15807
 //========================================
 	opcode=4'b001;//RESET
 	#10;
-	inputA=4'b1010;
+	inputA=16'b1100010001001010;
 	opcode=4'b0010;//add 1010
 	#10
-	inputA=4'b1010;
+	inputA=16'b0011110110111111;
 	opcode=4'b1101;//XNOR
 	#10;				
 //========================================	
@@ -440,10 +429,10 @@ breadboard bb8(clk,rst,inputA,inputB,outputC,opcode,error);
  
 	opcode=4'b001;//RESET
 	#10;
-	inputA=4'b0111;
+	inputA=16'b1100010001001010;
 	opcode=4'b0010;//add 1010
 	#10
-	inputA=4'b0000;
+	inputA=16'b0000000000000000;
 	opcode=4'b0101;//Divide
 	#10;
  

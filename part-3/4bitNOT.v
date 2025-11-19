@@ -11,7 +11,7 @@
 //==================================================================
 
 module FourBitNOT(inputA,outputC);
-parameter k=4;
+parameter k=16;
 input  [k-1:0] inputA;
 output [k-1:0] outputC;
 wire   [k-1:0] inputA;

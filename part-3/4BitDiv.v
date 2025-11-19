@@ -1,5 +1,5 @@
 module FourBitDiv(inputA,inputB,result,err);
-parameter k=4;
+parameter k=16;
 
 input [k-1:0]inputA;
 input [k-1:0]inputB;
