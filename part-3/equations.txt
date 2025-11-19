@@ -1,0 +1,6 @@
+Kinetic Energy:
+    K = 1/2 m v^2
+
+Area of Trapezoid:
+    A = 1/2 (base1 + base2) * height
+    
