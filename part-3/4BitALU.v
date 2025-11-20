@@ -356,6 +356,7 @@ breadboard bb8(clk,rst,inputA,inputB,outputC,opcode,error);
 //========================================	
 //Perimeter of Rectangle: P = 2(l + w)
 //l = 125, w = 87
+//P = 424
 //========================================
     opcode=4'b0001;//RESET
     #10;
@@ -366,7 +367,7 @@ breadboard bb8(clk,rst,inputA,inputB,outputC,opcode,error);
     opcode=4'b0010;//ADD 
     #10;
     inputA=16'd2;
-    opcode=4'b0100;//MULTIPLY (Result: 424)
+    opcode=4'b0100;//MULTIPLY
     #10;	
 //========================================	
 //Mod 42381 % 9257 - 33
