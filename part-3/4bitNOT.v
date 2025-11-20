@@ -1,16 +1,16 @@
 //=================================================================
 //
-// FourBitNOT
+// SixteenBitNOT
 //
 // Inputs
-// inputA, a 4-bit integer
+// inputA, a 16-bit integer
 //
 // Output
-// outputC, a 4-bit integer
+// outputC, a 16-bit integer
 //
 //==================================================================
 
-module FourBitNOT(inputA,outputC);
+module SixteenBitNOT(inputA,outputC);
 parameter k=16;
 input  [k-1:0] inputA;
 output [k-1:0] outputC;
@@ -26,23 +26,3 @@ end
  
 endmodule
 
-/*
-//============================================
-module testbench();
-
-reg [3:0] a;
-wire [3:0] c;
-
-FourBitNOT fbn(a,c);
-
-initial begin
-a=4'b1111;
-#10;
-$display("%b|%b",a,c);
-$finish;
-
-end
-
-
-endmodule
- */

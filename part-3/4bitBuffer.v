@@ -1,16 +1,16 @@
 //=================================================================
 //
-// FourBitBuffer
+// SixteenBitBuffer
 //
 // Inputs
-// inputA, a 4-bit integer
+// inputA, a 16-bit integer
 //
 // Output
-// outputC, a 4-bit integer
+// outputC, a 16-bit integer
 //
 //==================================================================
 
-module FourBitBuffer(inputA,outputC);
+module SixteenBitBuffer(inputA,outputC);
 parameter k=16;
 input  [k-1:0] inputA;
 output [k-1:0] outputC;

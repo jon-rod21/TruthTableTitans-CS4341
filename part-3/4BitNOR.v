@@ -1,17 +1,17 @@
 //=================================================================
 //
-// FourBitNOR
+// SixteenBitNOR
 //
 // Inputs
-// inputA, a 4-bit integer
-// inputB, a 4-bit integer
+// inputA, a 16-bit integer
+// inputB, a 16-bit integer
 //
 // Output
-// outputC, a 4-bit integer
+// outputC, a 16-bit integer
 //
 //==================================================================
 
-module FourBitNOR(inputA,inputB,outputC);
+module SixteenBitNOR(inputA,inputB,outputC);
 parameter k=16;
 input  [k-1:0] inputA;
 input  [k-1:0] inputB;
@@ -30,23 +30,3 @@ end
  
 endmodule
 
-/*
-module testbench();
-
-reg [3:0] a,b;
-wire [3:0] c;
-
-FourBitNOR fbon(a,b,c);
-
-initial begin
-a=4'b1111;
-b=4'b1010;
-#10;
-$display("%b|%b|%b",a,b,c);
-$finish;
-
-end
-
-
-endmodule
- */

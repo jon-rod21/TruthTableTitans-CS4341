@@ -1,4 +1,4 @@
-module FourBitMod(inputA,inputB,result,err);
+module SixteenBitMod(inputA,inputB,result,err);
 parameter k=16;
 
 input [k-1:0]inputA;
@@ -28,35 +28,3 @@ begin
  end
 
 endmodule
-
-/*
-//============================================
-module testbench();
-
-reg [3:0] a,b;
-wire [3:0] c;
-wire d;
-
-FourBitMod fbm(a,b,c,d);
-
-initial begin
-
-a=4'b1111;
-b=4'b1010;
-#10;
-$display("%b|%b|%b|%b",a,b,c,d);
-
-a=4'b1111;
-b=4'b0000;
-#10;
-$display("%b|%b|%b|%b",a,b,c,d);
-
-
-
-$finish;
-
-end
-
-
-endmodule
- */

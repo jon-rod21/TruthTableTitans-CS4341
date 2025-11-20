@@ -3,4 +3,11 @@ Kinetic Energy:
 
 Area of Trapezoid:
     A = 1/2 (base1 + base2) * height
+
+Vfinal
+    V = u - at
+
+Surface area of rectangular prism
+    A = 2 * (l * w + h * w + h * l)
+
     

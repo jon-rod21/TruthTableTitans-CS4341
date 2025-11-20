@@ -1,4 +1,4 @@
-module FourBitAddSub(inputA,inputB,mode,carry,sum,overflow);
+module SixteenBitAddSub(inputA,inputB,mode,carry,sum,overflow);
 	parameter k=16;
     input [k-1:0] inputA;
 	input [k-1:0] inputB;
@@ -37,68 +37,3 @@ FullAdder FA15(inputA[ 15],xorInterface[ 15],carryInterface[ 14],carryInterface[
  	
  
 endmodule
-
-
- /*
-//===============================================
-module testbenchAddSub();
-
-reg [3:0] a,b;
-reg mode;
-wire carry;
-wire [3:0] sum;
-wire overflow;
-
-FourBitAddSub fbas(a,b,mode,carry,sum,overflow);
-
-initial begin
-
-a=4'b0001;
-b=4'b0001;
-mode=0;
-#10;
-$display("%b|%b|%b|%b|%b|%b",a,b,mode,carry,sum,overflow);
-	$write(fbas.carryInterface[3]);
-	$write(fbas.carryInterface[2]);
-	$write(fbas.carryInterface[1]);
-	$write(fbas.carryInterface[0]);
-	
-	$display();
-	
-a=4'b0001;
-b=4'b0001;
-mode=1;
-#10;
-
-a=4'b0011;
-b=4'b0010;
-mode=0;
-#10;
-$display("%b|%b|%b|%b|%b|%b",a,b,mode,carry,sum,overflow);
-	$write(fbas.carryInterface[3]);
-	$write(fbas.carryInterface[2]);
-	$write(fbas.carryInterface[1]);
-	$write(fbas.carryInterface[0]);
- 
-	$display();
-	
-a=4'b0111;
-b=4'b0111;
-mode=0;
-#10;
-$display("%b|%b|%b|%b|%b|%b",a,b,mode,carry,sum,overflow);
-
-	$write(fbas.carryInterface[3]);
-	$write(fbas.carryInterface[2]);
-	$write(fbas.carryInterface[1]);
-	$write(fbas.carryInterface[0]);
- 
-	$display();
-$finish;
-
-end
-
-
-endmodule
- 
-*/

@@ -1,4 +1,4 @@
-module FourBitMul(inputA,inputB,result);
+module SixteenBitMul(inputA,inputB,result);
 parameter k=16;
 
 input [k-1:0]inputA;
@@ -20,32 +20,3 @@ result=32'b00000000000000000000000000000000;
  end
 
 endmodule
-
-/*
-//============================================
-module testbench();
-
-reg [3:0] a,b;
-wire [7:0] c;
- 
-
-FourBitMul fbm(a,b,c);
-
-initial begin
-
-a=4'b1010;
-b=4'b1010;
-#10;
-$display("%b|%b|%b ",a,b,c );
-
-a=4'b1010;
-b=4'b0010;
-#10;
-$display("%b|%b|%b ",a,b,c );
-$finish;
-
-end
-
-
-endmodule
- */

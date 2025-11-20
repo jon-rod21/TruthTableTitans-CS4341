@@ -63,24 +63,24 @@ wire [(k*2-1):0] cur;
 //----------------------------------------------
 DFF ACC1 [31:0] (clk,next,cur);//Accumulator Register
 Dec4x16          dec1(opcode,select);
-Mux16x8          mux1(channels,select,b);
+Mux32x16          mux1(channels,select,b);
 //----------------------------------------------
-FourBitMul      mult1(regB,regA,outputMULT);
-FourBitAddSub addsub1(regB,regA,mode,/**/lastcarry,outputADDSUB,ADDerror);
-FourBitDiv       div1(regB,regA,outputDIV,ZeroError);
-FourBitMod       mod1(regB,regA,outputMOD,ZeroError);
-//----------------------------------------------
-FourBitBuffer    buf1(regB,outputBUFFER);
-FourBitNOT       not1(regB,outputNOT);
-//----------------------------------------------
-FourBitAND       and1(regB,regA,outputAND);
-FourBitNAND     nand1(regB,regA,outputNAND);
-//----------------------------------------------
-FourBitOR         or1(regB,regA,outputOR);
-FourBitNOR       nor1(regB,regA,outputNOR);
-//----------------------------------------------
-FourBitXOR       xor1(regB,regA,outputXOR);
-FourBitXNOR     xnor1(regB,regA,outputXNOR);
+SixteenBitMul      mult1(regB,regA,outputMULT);
+SixteenBitAddSub addsub1(regB,regA,mode,/**/lastcarry,outputADDSUB,ADDerror);
+SixteenBitDiv       div1(regB,regA,outputDIV,ZeroError);
+SixteenBitMod       mod1(regB,regA,outputMOD,ZeroError);
+//--------------------------------------------
+SixteenBitBuffer    buf1(regB,outputBUFFER);
+SixteenBitNOT       not1(regB,outputNOT);
+//--------------------------------------------
+SixteenBitAND       and1(regB,regA,outputAND);
+SixteenBitNAND     nand1(regB,regA,outputNAND);
+//--------------------------------------------
+SixteenBitOR         or1(regB,regA,outputOR);
+SixteenBitNOR       nor1(regB,regA,outputNOR);
+//--------------------------------------------
+SixteenBitXOR       xor1(regB,regA,outputXOR);
+SixteenBitXNOR     xnor1(regB,regA,outputXNOR);
 //----------------------------------------------
 /*
 OpCodes
@@ -276,7 +276,9 @@ breadboard bb8(clk,rst,inputA,inputB,outputC,opcode,error);
 
 
 //========================================	
-//Add 2+2
+//Kinetic Energy: K = 1/2 * m * v * v
+//m = 10 , v = 20
+//K = 2000
 //========================================
 	
  	//---------------------------------
@@ -284,72 +286,113 @@ breadboard bb8(clk,rst,inputA,inputB,outputC,opcode,error);
 	opcode=4'b0001;//RESET
 	#10
 	//---------------------------------	
-	inputA=16'b0000110110010110;
+	inputA=16'd20; // v
 	opcode=4'b0010;//ADD
 	#10;
 	//---------------------------------	
-	inputA=16'b1010011011101011;
-	opcode=4'b0010;//ADD
+	inputA=16'd20; // v
+	opcode=4'b0100;//MULTIPLY v * v
 	#10
+    //---------------------------------
+    inputA=16'd10; // m
+    opcode=4'b0100;//MULTIPLY m * v * v
+    #10
+    //---------------------------------
+    inputA=16'd2;  // divide by 2
+    opcode=4'b0101;//DIVIDE
+    #10
 
 //========================================	
-//Subtract 52341 from 28674
+//Area of Trapezoid: A = 1/2 * (base1 + base2) * height
+//base1 = 30, base2 = 50, height = 26
+//A = 96
 //========================================
 	opcode=4'b0001;//RESET
 	#10;
-	inputA=16'b0111000000000010;//Add 3
-	opcode=4'b0010;
+    //---------------------------------
+    inputA=16'd30; // base1
+	opcode=4'b0010;//ADD
 	#10;
-	inputA=16'b1100110001110101;//Sub 5
-	opcode=4'b0011;
+    //---------------------------------
+    inputA=16'd50; // base2
+	opcode=4'b0010;//ADD
+	#10;
+    //---------------------------------
+    inputA=16'd26; // height
+	opcode=4'b0100; //MULTIPLY
+	#10;
+    //---------------------------------
+    inputA=16'd2; // divide by 2
+	opcode=4'b0101; //DIVIDE
 	#10;
 
 //========================================	
-//Multiply 27322 * 46815
+//Final Velocity: V = u - at
+//u = 12345, a = 293, t = 7
+//V = 10294
 //========================================
 	opcode=4'b0001;//RESET
 	#10;
-	inputA=16'b0110101010111010;//Add 5
-	opcode=4'b0010;
+    //---------------------------------
+	inputA=16'b0000000100100101; // a
+	opcode=4'b0010;//ADD
 	#10;
-	inputA=16'b1011011011011111;//Mult by 3
-	opcode=4'b0100;
+    //---------------------------------
+	inputA=16'b0000000000000111;   // t
+	opcode=4'b0100;//MULTIPLY
+	#10;
+    //---------------------------------
+	opcode=4'b1001;//NOT
+	#10;
+    //---------------------------------
+    inputA=16'd1;
+	opcode=4'b0010;//ADD
+	#10;
+    //---------------------------------
+	inputA=16'b0011000000111001;// u
+	opcode=4'b0010;//ADD
 	#10;
 	
 //========================================	
-//Divide 12345 / 54321
+//Perimeter of Rectangle: P = 2(l + w)
+//l = 125, w = 87
 //========================================
-	opcode=4'b0001;//RESET
-	#10;
-	inputA=16'b0011000000111001;//Add 5
-	opcode=4'b0010;
-	#10;
-	inputA=16'b1101010000110001;//Div by 3
-	opcode=4'b0101;
-	#10;
-	
+    opcode=4'b0001;//RESET
+    #10;
+    inputA=16'd125; // l
+    opcode=4'b0010;//ADD
+    #10;
+    inputA=16'd87; // w
+    opcode=4'b0010;//ADD 
+    #10;
+    inputA=16'd2;
+    opcode=4'b0100;//MULTIPLY (Result: 424)
+    #10;	
 //========================================	
-//Mod 42381 % 9257
+//Mod 42381 % 9257 - 33
 //========================================
 	opcode=4'b0001;//RESET
 	#10;
-	inputA=16'b1010010110001101;//Add 5
+	inputA=16'b1010010110001101;//Add 42381
 	opcode=4'b0010;
 	#10;
-	inputA=16'b0010010000101001;//Div by 3
+	inputA=16'b0010010000101001;//Mod by 9257
 	opcode=4'b0110;
+	#10;
+	inputA=16'b0000000000100001;//Subtract 33
+	opcode=4'b0011;//SUB
 	#10;
 	
 //========================================	
 //AND 50250 and 15807
 //========================================
-	opcode=4'b001;//REST
+	opcode=4'b001;//RESET
 	#10;
 	inputA=16'b1100010001001010;
-	opcode=4'b0010;//add 1010
+	opcode=4'b0010;
 	#10
 	inputA=16'b0011110110111111;
-	opcode=4'b0111;//AND 1111
+	opcode=4'b0111;//AND
 	#10;
 	
 	
@@ -359,7 +402,7 @@ breadboard bb8(clk,rst,inputA,inputB,outputC,opcode,error);
 	opcode=4'b001;//RESET
 	#10;
 	inputA=16'b1100010001001010;
-	opcode=4'b0010;//add 1010
+	opcode=4'b0010;
 	#10
 	inputA=16'b0011110110111111;
 	opcode=4'b1000;//OR 1111
@@ -371,18 +414,18 @@ breadboard bb8(clk,rst,inputA,inputB,outputC,opcode,error);
 	opcode=4'b001;//RESET
 	#10;
 	inputA=16'b1100010001001010;
-	opcode=4'b0010;//add 1010
+	opcode=4'b0010;
 	#10
 	opcode=4'b1001;//NOT
 	#10;
 	
 //========================================	
-//NAND 50250 and 15807
+//XOR 50250 and 15807
 //========================================
 	opcode=4'b001;//RESET
 	#10;
 	inputA=16'b1100010001001010;
-	opcode=4'b0010;//add 1010
+	opcode=4'b0010;
 	#10
 	inputA=16'b0011110110111111;
 	opcode=4'b1010;//XOR
@@ -394,7 +437,7 @@ breadboard bb8(clk,rst,inputA,inputB,outputC,opcode,error);
 	opcode=4'b001;//RESET
 	#10;
 	inputA=16'b1100010001001010;
-	opcode=4'b0010;//add 1010
+	opcode=4'b0010;
 	#10
 	inputA=16'b0011110110111111;
 	opcode=4'b1011;//NAND
@@ -406,7 +449,7 @@ breadboard bb8(clk,rst,inputA,inputB,outputC,opcode,error);
 	opcode=4'b001;//RESET
 	#10;
 	inputA=16'b1100010001001010;
-	opcode=4'b0010;//add 1010
+	opcode=4'b0010;
 	#10
 	inputA=16'b0011110110111111;
 	opcode=4'b1100;//NOR
@@ -418,7 +461,7 @@ breadboard bb8(clk,rst,inputA,inputB,outputC,opcode,error);
 	opcode=4'b001;//RESET
 	#10;
 	inputA=16'b1100010001001010;
-	opcode=4'b0010;//add 1010
+	opcode=4'b0010;
 	#10
 	inputA=16'b0011110110111111;
 	opcode=4'b1101;//XNOR
@@ -430,7 +473,7 @@ breadboard bb8(clk,rst,inputA,inputB,outputC,opcode,error);
 	opcode=4'b001;//RESET
 	#10;
 	inputA=16'b1100010001001010;
-	opcode=4'b0010;//add 1010
+	opcode=4'b0010;
 	#10
 	inputA=16'b0000000000000000;
 	opcode=4'b0101;//Divide
@@ -441,11 +484,11 @@ breadboard bb8(clk,rst,inputA,inputB,outputC,opcode,error);
 //========================================
 	opcode=4'b0001;//RESET
 	#10;
-	inputA=4'b0111;
-	opcode=4'b0010;//Add
+	inputA=16'b0111111111111111;
+	opcode=4'b0010;
 	#10
-	inputA=4'b0111;
-	opcode=4'b0010;//ADD
+	inputA=16'b0111111111111111;
+	opcode=4'b0010;
 	#10;				
 							
 	$finish;
